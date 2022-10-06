@@ -6,11 +6,12 @@
 - Web: https://www.davidaybar.com/
 
 ## Proceso de instalación
-
-5000: Logstash TCP input
-9200: Elasticsearch HTTP
-9300: Elasticsearch TCP transport
-5601: Kibana
+Se expondrán los siguientes puertos:
+- 5000: Logstash TCP input
+- 9200: Elasticsearch HTTP
+- 9300: Elasticsearch TCP transport
+- 5601: Kibana
+- 9000: Cerebro HTTP
 
 ### Clonemos el proyecto git al directorio actual
 ```
