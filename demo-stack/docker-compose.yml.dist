@@ -1,0 +1,88 @@
+version: '3.7'
+
+services:
+  
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: ./elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: bind
+        source: ./elasticsearch/data
+        target: /usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m" #1g 
+      ELASTIC_PASSWORD: david1234 #only used to initialize the keystore during the initial startup of Elasticsearch
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks
+      # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    networks:
+      - elk
+
+  logstash:
+    container_name: logstash
+    build:
+      context: ./logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./logstash/config/logstash.yml
+        target: /usr/share/logstash/config/logstash.yml
+        read_only: true
+      - type: bind
+        source: ./logstash/pipeline
+        target: /usr/share/logstash/pipeline
+        read_only: true
+    ports:
+      - "5000:5000/tcp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    container_name: kibana
+    build:
+      context: ./kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  #filebeat:
+    #image: "docker.elastic.co/beats/filebeat:8.4.0"
+    #container_name: filebeat
+    #hostname: hostname
+    #user: root
+    #volumes:
+      #- "./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      #- "/var/lib/docker:/var/lib/docker:ro"
+      #- "/var/run/docker.sock:/var/run/docker.sock"
+      ##- "/path/to/persisted/filesystem/logs/:/path/to/persisted/filesystem/logs/:ro"
+      ##- "/path/to-other/persisted/filesystem/logs/:/path/to-other/persisted/filesystem/logs/:ro"
+
+networks:
+  elk:
+    driver: bridge

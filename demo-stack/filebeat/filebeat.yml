@@ -1,0 +1,41 @@
+filebeat.inputs:
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+  ## Patterns encapsulate liferay tomcat logs
+  #multiline.type: pattern
+  #multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+  #multiline.negate: true
+  #multiline.match: after
+
+#- type: log
+#  enabled: true
+#  paths:
+#    - '/path/to/persisted/filesystem/logs/log.log'
+#    - '/path/to/persisted/filesystem/logs/other-log.log'
+#    - '/path/to-other/persisted/filesystem/logs/other.log'
+  ## Patterns encapsulate liferay tomcat logs
+  #multiline.type: pattern
+  #multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+  #multiline.negate: true
+  #multiline.match: after
+
+
+processors:
+- add_docker_metadata:
+    host: "unix:///var/run/docker.sock"
+
+- decode_json_fields:
+    fields: ["message"]
+    target: "json"
+    overwrite_keys: true
+
+output.logstash:
+  hosts: ["10.137.110.30:5001"]
+  username: "logstash_system"
+  password: "david1234"
+  indices:
+    - index: "logstash-%{[agent.version]}-%{+yyyy.MM.dd}"
+
+logging.json: true
+logging.metrics.enabled: false

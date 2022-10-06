@@ -1,0 +1,23 @@
+# PHPSTORM #
+############
+.idea/*
+
+# Visual Studio Code #
+######################
+.vscode
+
+# Docker
+########
+/.env
+/docker-compose.override.yml
+/docker-compose.yml
+
+# Eclipse
+##################
+/.project
+/.settings/
+/.buildpath
+
+# Project Files
+###########
+/volumes/
