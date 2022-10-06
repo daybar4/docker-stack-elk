@@ -82,6 +82,15 @@ services:
       #- "/var/run/docker.sock:/var/run/docker.sock"
       ##- "/path/to/persisted/filesystem/logs/:/path/to/persisted/filesystem/logs/:ro"
       ##- "/path/to-other/persisted/filesystem/logs/:/path/to-other/persisted/filesystem/logs/:ro"
+    #networks: ### Quitar para usar filebeat desde un nodo externo al servidor
+    #  - elk
+
+  #cerebro:
+  #  image: yannart/cerebro
+  #  ports:
+  #    - "9000:9000"
+  #  networks:
+  #    - elk
 
 networks:
   elk:

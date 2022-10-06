@@ -6,18 +6,19 @@
 ######################
 .vscode
 
-# Docker
-########
+# Docker #
+##########
 /.env
 /docker-compose.override.yml
 /docker-compose.yml
 
-# Eclipse
-##################
+# Eclipse #
+###########
 /.project
 /.settings/
 /.buildpath
 
-# Project Files
-###########
+# Project Files #
+#################
 /volumes/
+/elasticsearch/data/
