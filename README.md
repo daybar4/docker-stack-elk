@@ -1,2 +1,2 @@
-# docker-stack-elk
-Deploy a docker stack with elasticsarch+logstash+kibana+external-filebeat 
+# Docker stack ELK+filebeat
+Deploy a docker stack with ElasticSearch, LogStash, Kibana and Filebeat 
