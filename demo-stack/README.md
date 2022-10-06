@@ -46,7 +46,7 @@ Aplicamos permisos para la carepta data de elastic
 sudo chown 1000:1000 ./elasticsearch/data
 ```
 
-### Creamos el stack
+### Creamos el stack, se bajará todo por primera vez, hay que esperar un poco
 ```
 docker-compose up -d --build
 ```
